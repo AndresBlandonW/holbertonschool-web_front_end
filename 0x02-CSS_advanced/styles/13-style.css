@@ -11,6 +11,12 @@ body {
     line-height: var(--line-height-base);
 }
 
+a:visited {
+    font-style: italic;
+}
+
+a:hover {}
+
 a {
     color: var(--text-color);
     text-decoration: none;
