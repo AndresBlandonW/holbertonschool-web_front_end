@@ -11,15 +11,21 @@ body {
     line-height: var(--line-height-base);
 }
 
+a:link {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
 a:visited {
     font-style: italic;
 }
 
-a:hover {}
+a:hover {
+    text-decoration: underline;
+}
 
-a {
-    color: var(--text-color);
-    text-decoration: none;
+a:active {
+    background-color: var(--color-light-grey);
 }
 
 .visually-hidden {
