@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+<script>
+    var availableItems = ['Shampoo', 'Soap', 'Sponge', 'Water'];
+
+    if (typeof(Storage) !== "undefined") {
+        createStore();
+        displayCart();
+    } else {
+        alert('Sorry, your browser does not support Web storage. Try again with a better one');
+    }
+
+    function addItemToCart(item) {
+        localStorage.setItem(item, true);
+    }
+
+    function createStore() {
+        var ul = document.createElement('ul');
+        ul.setAttribute('id', 'listitems');
+        document.body.appendChild(ul);
+        for (let index = 0; index < availableItems.length; index++) {
+            // agrega un elemento a la lista
+            var li = document.createElement('li');
+            document.getElementById('listitems').appendChild(li);
+
+            // agrega la funcion de click a la lista
+            const aTag = document.createElement("a");
+            aTag.setAttribute('href', '#');
+            aTag.setAttribute('onclick', 'addItemToCart(this.id);');
+            aTag.innerHTML = availableItems[index]
+            aTag.setAttribute('id', availableItems[index]);
+            li.appendChild(aTag);
+        }
+    }
+
+    function displayCart() {
+        if (localStorage.length > 0){
+            var p = document.createElement('p');
+            p.innerHTML = 'You previously had ' + localStorage.length + ' items in your cart'
+            document.body.appendChild(p);
+        }
+    }
+
+
+</script>
