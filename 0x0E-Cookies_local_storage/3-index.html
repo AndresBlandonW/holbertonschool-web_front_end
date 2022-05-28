@@ -71,6 +71,8 @@
         document.cookie = "firstname=; email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         var welcome = document.getElementById('welcome');
         welcome.remove();
+        document.getElementById('firstname').value = '';
+        document.getElementById('email').value = '';
         showForm();
     }
 
