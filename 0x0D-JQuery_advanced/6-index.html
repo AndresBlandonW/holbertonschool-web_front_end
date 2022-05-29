@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <title>Task 6</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+
+    </body>
+</html>
+
+<script type="application/javascript">
+    $(document).ready(function(){
+        createFamilyTree();
+        createForm();
+    });
+
+    function createFamilyTree() {
+        $('body').append('<table><thead><tr><th>Firstname</th><th>Lastname</th></tr></thead></table>')
+        $('table').append('<tbody></tbody>');
+    }
+
+    function addNewMember(firstName, lastName, position) {
+        if (position == 'before') {
+            $('table tbody').prepend('<tr><td>' + firstName + '</td><td>' + lastName + '</td><td> (x)</tr></tr>');
+        } else {
+            $('table tbody').append('<tr><td>' + firstName + '</td><td>' + lastName + '</td><td> (x)</tr></tr>');
+        }
+        $('td:nth-child(3)').css('background-color', 'orange');
+    
+        $("td:nth-child(3)").on("click", function(){
+            $(this).parent().remove();
+        });
+    }
+
+    function createForm() {
+        $("table").before("<form><input type='text' id='firstname' name='firstname'><input type='text' id='lastname' name='lastname'></form>");
+        $("form").append("<select id='select-before-or-after' name='select-before-or-after'><option value='before'>Before</option><option value='after'>After</option></select>");
+        $("form").append("<input type='submit' id='submit' name='submit'>");
+        $("form").submit(event => {
+            event.preventDefault();
+            addNewMember($('input').first().val(), $('input:nth-of-type(2)').val(), $('select').val());
+        });
+}
+
+    
+</script>
