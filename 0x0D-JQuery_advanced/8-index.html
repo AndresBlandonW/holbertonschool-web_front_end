@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <title>Task 8</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+
+    </body>
+</html>
+
+<script type="application/javascript">
+    
+    function createSearchForm(params) {
+        $("body").append("<form><input type='text'></form>");
+        $("form").append("<input type='submit'>");
+        $("form").submit(event => {
+            event.preventDefault();
+            queryWikipedia($('input').val());
+        });
+        $("body").append("<ul></ul>");
+        $("body").append("<ul id='pagination'></ul>");
+    }
+
+    function queryWikipedia(search, offset=0) {
+        let url = "https://en.wikipedia.org/w/api.php";
+        const params = {
+            action: "query",
+            list: "search",
+            srsearch: search,
+            sroffset: offset,
+            format: "json"
+        };
+
+        url = url + "?origin=*";
+        Object.keys(params).forEach(key => {
+            url += "&" + key + "=" + params[key];
+        });
+
+        console.log(url);
+
+        $.get(url, function( dataq ) {
+            dataq.query.search.forEach(data => {
+                const {pageid, title, snippet} = data;
+                addNewArticle(pageid, title, snippet);
+            });
+            buildPagination(dataq.query.searchinfo.totalhits, 10, dataq.continue);
+        }, "json" );
+    }
+
+    function addNewArticle(id, title, snippet) {
+        $('ul').append('<li><p tag="span">'+ id +' - <b>' + title  + '</b></p><p>' + snippet + '</p></li>');
+        
+    }
+
+    function buildPagination(numberOfItems, itemsPerPage, currentOffset) {
+        $("#pagination").empty();
+        $("#pagination").css({"list-style-type":"none"});
+        for (let i = 0; i <= numberOfItems / itemsPerPage; i++) {
+            const li = $("<li></li>").css({
+                "cursor":"pointer",
+                "margin-left":"10px",
+                "display":"inline"  
+            });
+            if (i === currentOffset - 10){
+                li.css("font-weight", "bold")
+            }
+            $("#pagination li").last().text(i);
+            $("#pagination").append(li);
+        }
+
+        $("#pagination li").click(event => {
+            const newOffset = (event.target.innerHTML);
+            $("ul:first-of-type").empty();
+            queryWikipedia($('input').val(), newOffset - 1);
+        });
+    }
+    
+    $(document).ready(() => {
+        createSearchForm();
+    });
+</script>

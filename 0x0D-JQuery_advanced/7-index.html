@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <title>Task 7</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+
+    </body>
+</html>
+
+<script type="application/javascript">
+    
+    function createSearchForm(params) {
+        $("body").append("<form><input type='text'></form>");
+        $("form").append("<input type='submit'>");
+        $("form").submit(event => {
+            event.preventDefault();
+            queryWikipedia($('input').val());
+        });
+        $("body").append("<ul></ul>");
+    }
+
+    function queryWikipedia(search) {
+        let url = "https://en.wikipedia.org/w/api.php";
+        const params = {
+            action: "query",
+            list: "search",
+            srsearch: search,
+            format: "json"
+        };
+
+        url = url + "?origin=*";
+        Object.keys(params).forEach(key => {
+            url += "&" + key + "=" + params[key];
+        });
+
+        console.log(url);
+
+        $.get(url, function( dataq ) {
+            dataq.query.search.forEach(data => {
+                const {pageid, title, snippet} = data;
+                addNewArticle(pageid, title, snippet);
+            }); 
+        }, "json" );
+    }
+
+    function addNewArticle(id, title, snippet) {
+        $('ul').append('<li><p tag="span">'+ id +' - <b>' + title  + '</b></p><p>' + snippet + '</p></li>');
+        
+    }
+    
+    $(document).ready(() => {
+        createSearchForm();
+    });
+</script>
